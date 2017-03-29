@@ -1,0 +1,22 @@
+<div ng-app="myapp" class="container-fluid">
+  <div ng-controller="HelloController">
+    <h2 class="text-center text-info">Wiki Viewer with {{helloTo.title}}</h2>
+    <h4 class="text-center">Can't find a topic to Search for <i class="fa fa-question-circle"></i> Start with a random topic <a target="_blank" href="https://en.wikipedia.org/wiki/Special:Random" title="Click to navigate to a random wikipedia article">here</a><i class="fa fa-wikipedia-w"></i></h4>
+  </div>
+  <div class="row">
+    <div ng-controller="QueryController" class="col-xs-6 col-xs-offset-3">
+      <form class="form-inline">
+        <div class="form-group has-error has-feedback">
+          <label for="searchTopic">Enter your search topic</label><input type="text" class="form-control text-center" ng-model="searchObject.query" id="searchTopic" placeholder="Enter here ex:(WWII)" aria-describedby="searchStatus"><button ng-click="searchObject.getField()"
+            type="reset" value="Reset"><i class="fa fa-close"></i></button>
+        </div>
+        <button ng-click="form_url()" type="submit" class="btn btn-default"><span class="glyphicon glyphicon-search"></span></button><br>
+      </form>
+      <p><strong>Results for:
+        </strong><em>{{searchObject.getField()}}</em></p>
+      <div class="result-container" ng-repeat="results in searchResults">
+        <div class="center-block result-class">
+          <a target="_blank" href={{results.fullurl}}><h4 class="text-center text-info"><u>{{results.title}}</u></h4><p>{{results.extract}}</p></div><br>
+</div>
+     </div>
+</div>

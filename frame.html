@@ -1,0 +1,200 @@
+
+
+<!DOCTYPE html>
+<html >
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="shortcut icon" type="image/x-icon" href="https://production-assets.codepen.io/assets/favicon/favicon-8ea04875e70c4b0bb41da869e81236e54394d63638a1ef12fa558a4a835f1164.ico" />
+  <link rel="mask-icon" type="" href="https://production-assets.codepen.io/assets/favicon/logo-pin-f2d2b6d2c61838f7e76325261b7195c27224080bc099486ddd6dccb469b8e8e6.svg" color="#111" />
+  <title>CodePen - Wikipedia Angular</title>
+  <link rel="stylesheet" href="http://www.w3schools.com/lib/w3.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+  
+  
+  <link rel='stylesheet prefetch' href='https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css'>
+<link rel='stylesheet prefetch' href='https://maxcdn.bootstrapcdn.com/bootswatch/3.3.7/journal/bootstrap.min.css'>
+
+      <style>
+      body {
+  background: url(https://static.pexels.com/photos/40906/art-attachment-background-boat-40906.jpeg) center;
+  color: lightblue;
+}
+
+input {
+  color: black;
+  margin-left: 1em;
+  margin-right: -0.2em;
+  padding-right: 0;
+  border: 4px solid #6A9EF2 !important;
+  border-radius: 1em !important;
+  height: 3.2em !important;
+}
+div h4{
+  color: #87C4BB;
+}
+.glyphicon-remove {
+  padding-top: 1.25%;
+}
+
+.form-inline button {
+  margin-left: 0.25em;
+  border: 6px solid gray;
+  border-radius: 2em;
+}
+
+.form-inline button:hover {
+  background: lightblue;
+}
+.form-group button {
+  border-style: none;
+  margin-left: -10%;
+  background-color: red;
+  color: white;
+}
+.form-group button:hover{
+  background-color: pink;
+}
+.result-container{
+  margin-left: 0;
+}
+.result-class {
+  height: 100%;
+  width: 200%;
+  margin-left: -50%;
+  padding-left: 5%;
+  padding-right: 5%;
+  display: block;
+  background-color: #B4BAAD;
+  border: 2px solid black;
+  border-radius: 1em;
+  margin-bottom: 5%;
+}
+.result-class:hover {
+  background-color: #B3D9FF;
+  border-left: 2px solid orange;
+}
+.result-class a > * {
+  text-decoration: none;
+  color: black;
+}
+
+
+    </style>
+
+  <script>
+  window.console = window.console || function(t) {};
+</script>
+
+  
+  
+  <script>
+  if (document.location.search.match(/type=embed/gi)) {
+    window.parent.postMessage("resize", "*");
+  }
+</script>
+
+</head>
+
+<body translate="no" >
+
+     <div ng-app="myapp" class="container-fluid">
+   <div ng-controller="HelloController" >
+         <h2 class="text-center text-info">Wiki Viewer with {{helloTo.title}}</h2>
+     <h4 class="text-center">Can't find a topic to Search for <i class="fa fa-question-circle"></i> Start with a random topic <a rel="nofollow" rel="noreferrer"target="_blank" href="https://en.wikipedia.org/wiki/Special:Random" title="Click to navigate to a random wikipedia article">here</a><i class="fa fa-wikipedia-w"></i></h4>
+      </div>
+   <div class="row">
+    <div ng-controller="QueryController" class="col-xs-6 col-xs-offset-3"> 
+     <form class="form-inline">
+       <div class="form-group has-error has-feedback">
+       <label for="searchTopic">Enter your search topic</label><input type="text" class="form-control text-center" ng-model="searchObject.query" id="searchTopic" placeholder="Enter here ex:(WWII)" aria-describedby="searchStatus"><button ng-click="searchObject.getField()" type="reset" value="Reset"><i class="fa fa-close"></i></button>
+       </div>
+       <button ng-click="form_url()"  type="submit" class="btn btn-default"><span class="glyphicon glyphicon-search"></span></button><br>
+     </form>
+      <p><strong>Results for:
+        </strong><em>{{searchObject.getField()}}</em></p>
+     <div class="result-container" ng-repeat="results in searchResults">
+     <div class="center-block result-class">  
+       <a rel="nofollow" rel="noreferrer"target="_blank" href={{results.fullurl}}><h4 class="text-center text-info"><u>{{results.title}}</u></h4><p>{{results.extract}}</p></div><br>
+</div>
+     </div>
+</div>
+    <script src="//production-assets.codepen.io/assets/common/stopExecutionOnTimeout-b2a7b3fe212eaa732349046d8416e00a9dec26eb7fd347590fbced3ab38af52e.js"></script>
+
+  <script src='https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js'></script>
+<script src='https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.5.8/angular.min.js'></script>
+<script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.0/jquery.min.js'></script>
+
+    <script>
+    var myapp = angular.module("myapp", [])
+myapp.directive("result", function() {
+  var directive = {};
+  directive.restrict = 'E';
+  directive.template = "<u>{{result.header}}</u>{{result.previewText}}";
+  directive.scope = {
+    result: "=header"
+  }
+  directive.compile = function(element, attributes) {
+    var linkFunction = function($scope, element, attributes) {
+      element.html("<div class='result-class'><a target='_blank' href='" + $scope.result.refLink + "'>" +
+        "<h4 class='text-primary'><u>" + $scope.result.header + "</u></h4>" + "<p>" + $scope.result.previewText + "</p></a></div>");
+    }
+    return linkFunction;
+  }
+  return directive;
+});
+myapp.controller("HelloController", function($scope) {
+  $scope.helloTo = {};
+  $scope.helloTo.title = "AngularJS 1.5";
+});
+myapp.controller("QueryController", function($scope, $http) {
+  $scope.searchObject = {
+    query: "",
+    getField: function() {
+      var queryObj = $scope.searchObject;
+      return queryObj.query;
+    }
+  };
+  $scope.resultJSON = {};
+  $scope.urlObject = {
+    base_url: "https://en.wikipedia.org/w/api.php?action=query&format=json&errorlang=uselang&prop=info%7Cextracts&list=&meta=&iwurl=1&generator=search&callback=JSON_CALLBACK&utf8=1&ascii=1&inprop=url%7Cpreload%7Cdisplaytitle&exsentences=2&explaintext=1&gsrsearch=",
+    url_suffix: "&gsrnamespace=0&gsrlimit=10&gsroffset=0&gsrwhat=text&gsrinfo=totalhits%7Csuggestion%7Crewrittenquery&gsrprop=wordcount%7Ctimestamp%7Ctitlesnippet%7Csnippet",
+    full_url: ""
+  };
+  $scope.putResults = function(data) {
+    $scope.searchResults = [];
+    for (var i in data.query.pages) {if (window.CP.shouldStopExecution(1)){break;}
+      var newObj = {};
+      newObj.title = data.query.pages[i].title;
+      newObj.fullurl = data.query.pages[i].fullurl;
+      if (data.query.pages[i].extract !== undefined) {
+        newObj.extract = data.query.pages[i].extract;
+      }
+      else
+        newObj.extract = data.query.pages[i].title;
+      $scope.searchResults.push(newObj);
+    }
+window.CP.exitedLoop(1);
+
+  };
+  $scope.form_url = function() {
+    var obj = $scope.urlObject;
+    $scope.urlObject.full_url = obj.base_url + encodeURI($scope.searchObject.query) + obj.url_suffix;
+    $http.jsonp($scope.urlObject.full_url).then(function(response) {
+      $scope.resultJSON = response.data;
+    });
+    $scope.putResults($scope.resultJSON);
+  };
+  $scope.searchResults = [];
+
+});
+  //# sourceURL=pen.js
+  </script>
+
+  
+  
+
+</body>
+</html>
+ 
